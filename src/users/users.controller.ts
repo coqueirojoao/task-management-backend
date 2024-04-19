@@ -29,10 +29,10 @@ export class UsersController {
       return res.status(HttpStatus.CREATED).send();
     } catch (error) {
       if (error instanceof ValidationError) {
-      return res.status(HttpStatus.BAD_REQUEST).send(error);
-    } else {
-      return res.status(HttpStatus.BAD_GATEWAY).send(error);
-    }
+        return res.status(HttpStatus.BAD_REQUEST).send(error);
+      } else {
+        return res.status(HttpStatus.BAD_GATEWAY).send(error);
+      }
     }
   }
 
@@ -54,11 +54,7 @@ export class UsersController {
 
       return res.status(HttpStatus.OK).send(user);
     } catch (error) {
-      if (error instanceof ValidationError) {
-        return res.status(HttpStatus.BAD_REQUEST).send(error);
-      } else {
-        return res.status(HttpStatus.BAD_REQUEST).send({ error: error.message });
-      }
+      return res.status(HttpStatus.NOT_FOUND).send({ error: error.message });
     }
   }
 
@@ -69,11 +65,17 @@ export class UsersController {
     @Body() updateUserDto: UpdateUserDto,
   ) {
     try {
-     await this.usersService.update(+id, updateUserDto);
+      await this.usersService.update(+id, updateUserDto);
 
       return res.status(HttpStatus.OK).send();
     } catch (error) {
-      return res.status(HttpStatus.BAD_REQUEST).send(error);
+      if (error instanceof ValidationError) {
+        return res.status(HttpStatus.BAD_REQUEST).send(error);
+      } else {
+        return res
+          .status(HttpStatus.BAD_REQUEST)
+          .send({ error: error.message });
+      }
     }
   }
 

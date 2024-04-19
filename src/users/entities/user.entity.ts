@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import IUser from "../interfaces/IUser";
-import { Roles } from "../enum/Roles";
+import IUser from "../interfaces/user.interface";
+import { Roles } from "../enum/roles.enum";
 
 @Entity('users')
 export class User implements IUser {

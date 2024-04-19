@@ -46,9 +46,20 @@ export class UsersService {
     }
   }
 
+  async findByEmail(email: string): Promise<User> {
+    try {
+      return await this.userRepository.findOneBy({ email });
+    }
+    catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto) {
     try {
-      return await this.userRepository.update(id, updateUserDto);
+      return await this.userRepository.update(id, { ...updateUserDto, updated_at
+        : new Date()
+       });
     }
     catch (error) {
       throw new Error(error);
