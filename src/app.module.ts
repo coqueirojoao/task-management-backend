@@ -5,10 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
 
 @Module({
-  imports: [ConfigModule.forRoot({
-    envFilePath: '.env',
-  }),
-  TypeOrmModule.forRoot({
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+    }),
+    TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DATABASE_HOST,
       port: +process.env.DATABASE_PORT,
@@ -17,7 +18,8 @@ import { User } from './users/entities/user.entity';
       database: process.env.DATABASE_NAME,
       entities: [User],
       synchronize: true,
-  }), 
-  UsersModule],
+    }),
+    UsersModule,
+  ],
 })
 export class AppModule {}

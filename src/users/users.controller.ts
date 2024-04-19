@@ -8,13 +8,11 @@ import {
   Delete,
   Res,
   HttpStatus,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import e, { Response } from 'express';
+import { Response } from 'express';
 import { ValidationError } from 'class-validator';
 
 @Controller('users')
@@ -72,9 +70,7 @@ export class UsersController {
       if (error instanceof ValidationError) {
         return res.status(HttpStatus.BAD_REQUEST).send(error);
       } else {
-        return res
-          .status(HttpStatus.NOT_FOUND)
-          .send({ error: error.message });
+        return res.status(HttpStatus.NOT_FOUND).send({ error: error.message });
       }
     }
   }

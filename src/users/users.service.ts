@@ -7,41 +7,38 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User)
-  private userRepository: Repository<User>) {}
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
     try {
       const user = this.userRepository.create(createUserDto);
       return await this.userRepository.save(user);
-    }
-    catch (error) {
+    } catch (error) {
       throw new Error(error);
     }
   }
 
   async findAll(): Promise<User[]> {
-
     try {
       return await this.userRepository.find();
-    }
-    catch (error) {
+    } catch (error) {
       throw new Error(error);
     }
-
   }
 
   async findOne(id: number): Promise<User | void> {
     try {
-      const user = await this.userRepository.findOneBy({ id })
-      
+      const user = await this.userRepository.findOneBy({ id });
+
       if (!user) {
         throw new Error('User not found');
       }
 
       return user;
-    }
-    catch (error) {
+    } catch (error) {
       throw new Error(error);
     }
   }
@@ -49,25 +46,24 @@ export class UsersService {
   async findByEmail(email: string): Promise<User> {
     try {
       return await this.userRepository.findOneBy({ email });
-    }
-    catch (error) {
+    } catch (error) {
       throw new Error(error);
     }
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     try {
-      const response = await this.userRepository.update(id, { ...updateUserDto, updated_at
-        : new Date()
-       });
+      const response = await this.userRepository.update(id, {
+        ...updateUserDto,
+        updated_at: new Date(),
+      });
 
       if (response.affected === 0) {
         throw new Error('User not found');
       }
 
       return response;
-    }
-    catch (error) {
+    } catch (error) {
       throw new Error(error);
     }
   }
@@ -81,8 +77,7 @@ export class UsersService {
       }
 
       return response;
-    }
-    catch (error) {
+    } catch (error) {
       throw new Error(error);
     }
   }
