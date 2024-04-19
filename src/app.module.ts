@@ -21,7 +21,7 @@ import { AuthModule } from './auth/auth.module';
       synchronize: true,
     }),
     UsersModule,
-    AuthModule,
+    AuthModule
   ],
 })
 export class AppModule {}

@@ -14,6 +14,7 @@ import { EmailAuthMiddleware } from './middlewares/email-auth.middleware';
   imports: [TypeOrmModule.forFeature([User])],
   controllers: [UsersController],
   providers: [UsersService],
+  exports: [UsersService]
 })
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
