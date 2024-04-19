@@ -22,7 +22,6 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('create')
-  @UsePipes(new ValidationPipe())
   async create(@Res() res: Response, @Body() createUserDto: CreateUserDto) {
     try {
       await this.usersService.create(createUserDto);
@@ -49,24 +48,28 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Res() res: Response, @Param('id') id: string) {
+  async findOne(@Res() res: Response, @Param('id') id: string) {
     try {
-      const user = this.usersService.findOne(+id);
+      const user = await this.usersService.findOne(+id);
 
       return res.status(HttpStatus.OK).send(user);
     } catch (error) {
-      return res.status(HttpStatus.BAD_REQUEST).send(error);
+      if (error instanceof ValidationError) {
+        return res.status(HttpStatus.BAD_REQUEST).send(error);
+      } else {
+        return res.status(HttpStatus.BAD_REQUEST).send({ error: error.message });
+      }
     }
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Res() res: Response,
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     try {
-      this.usersService.update(+id, updateUserDto);
+     await this.usersService.update(+id, updateUserDto);
 
       return res.status(HttpStatus.OK).send();
     } catch (error) {
@@ -75,9 +78,9 @@ export class UsersController {
   }
 
   @Delete(':id')
-  remove(@Res() res: Response, @Param('id') id: string) {
+  async remove(@Res() res: Response, @Param('id') id: string) {
     try {
-      this.usersService.remove(+id);
+      await this.usersService.remove(+id);
 
       return res.status(HttpStatus.OK).send();
     } catch (error) {

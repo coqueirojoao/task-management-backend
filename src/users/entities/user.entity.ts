@@ -1,7 +1,9 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import IUser from "../interfaces/IUser";
+import { Roles } from "../enum/Roles";
 
 @Entity('users')
-export class User {
+export class User implements IUser {
     @PrimaryGeneratedColumn('increment')
     id: number;
 
@@ -14,6 +16,9 @@ export class User {
     @Column({ type: 'varchar', length: 255, nullable: false})
     password: string;
 
+    @Column({ type: 'varchar', length: 255, default: Roles.USER })
+    role: Roles;
+
     @Column({ type: 'date', nullable: false })
     birthday: Date;
 
@@ -22,4 +27,5 @@ export class User {
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     updated_at: Date;
+
 }

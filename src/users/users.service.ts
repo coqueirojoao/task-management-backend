@@ -31,27 +31,33 @@ export class UsersService {
 
   }
 
-  findOne(id: number): Promise<User> {
+  async findOne(id: number): Promise<User | void> {
     try {
-      return this.userRepository.findOneBy({ id })
+      const user = await this.userRepository.findOneBy({ id })
+      
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      return user;
     }
     catch (error) {
       throw new Error(error);
     }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto) {
     try {
-      return this.userRepository.update(id, updateUserDto);
+      return await this.userRepository.update(id, updateUserDto);
     }
     catch (error) {
       throw new Error(error);
     }
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     try {
-      return this.userRepository.delete(id);
+      return await this.userRepository.delete(id);
     }
     catch (error) {
       throw new Error(error);
