@@ -57,9 +57,15 @@ export class UsersService {
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     try {
-      return await this.userRepository.update(id, { ...updateUserDto, updated_at
+      const response = await this.userRepository.update(id, { ...updateUserDto, updated_at
         : new Date()
        });
+
+      if (response.affected === 0) {
+        throw new Error('User not found');
+      }
+
+      return response;
     }
     catch (error) {
       throw new Error(error);
@@ -68,7 +74,13 @@ export class UsersService {
 
   async remove(id: number) {
     try {
-      return await this.userRepository.delete(id);
+      const response = await this.userRepository.delete(id);
+
+      if (response.affected === 0) {
+        throw new Error('User not found');
+      }
+
+      return response;
     }
     catch (error) {
       throw new Error(error);

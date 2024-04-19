@@ -14,7 +14,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Response } from 'express';
+import e, { Response } from 'express';
 import { ValidationError } from 'class-validator';
 
 @Controller('users')
@@ -73,7 +73,7 @@ export class UsersController {
         return res.status(HttpStatus.BAD_REQUEST).send(error);
       } else {
         return res
-          .status(HttpStatus.BAD_REQUEST)
+          .status(HttpStatus.NOT_FOUND)
           .send({ error: error.message });
       }
     }
@@ -86,7 +86,7 @@ export class UsersController {
 
       return res.status(HttpStatus.OK).send();
     } catch (error) {
-      return res.status(HttpStatus.BAD_REQUEST).send(error);
+      return res.status(HttpStatus.NOT_FOUND).send({ error: error.message });
     }
   }
 }
