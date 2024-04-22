@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import IUser from '../interfaces/user.interface';
-import { Roles } from '../enum/roles.enum';
+import { Role } from '../../guard/roles/enum/role.enum';
 
 @Entity('users')
 export class User implements IUser {
@@ -16,8 +16,8 @@ export class User implements IUser {
   @Column({ type: 'varchar', length: 255, nullable: false })
   password: string;
 
-  @Column({ type: 'varchar', length: 255, default: Roles.USER })
-  role: Roles;
+  @Column({ type: 'varchar', length: 255, default: [Role.USER] })
+  role: Role[];
 
   @Column({ type: 'date', nullable: false })
   birthday: Date;

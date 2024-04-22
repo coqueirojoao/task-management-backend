@@ -14,11 +14,15 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Response } from 'express';
 import { ValidationError } from 'class-validator';
+import { Roles } from 'src/guard/roles/constants/roles-endpoints.constant';
+import { Role } from '../guard/roles/enum/role.enum';
+import { Public } from 'src/guard/auth/constants/public-endpoints.constant';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Public()
   @Post('create')
   async create(@Res() res: Response, @Body() createUserDto: CreateUserDto) {
     try {
@@ -34,6 +38,7 @@ export class UsersController {
     }
   }
 
+  @Roles(Role.ADMIN)
   @Get()
   async findAll(@Res() res: Response) {
     try {
@@ -45,6 +50,7 @@ export class UsersController {
     }
   }
 
+  @Roles(Role.ADMIN)
   @Get(':id')
   async findOne(@Res() res: Response, @Param('id') id: string) {
     try {
@@ -75,6 +81,7 @@ export class UsersController {
     }
   }
 
+  @Roles(Role.ADMIN)
   @Delete(':id')
   async remove(@Res() res: Response, @Param('id') id: string) {
     try {
