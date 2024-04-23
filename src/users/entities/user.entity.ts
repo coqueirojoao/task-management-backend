@@ -2,6 +2,7 @@ import { Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn } from 'ty
 import IUser from '../interfaces/user.interface';
 import { Role } from '../../guard/roles/enum/role.enum';
 import { Task } from 'src/tasks/entities/task.entity';
+import { Category } from 'src/categories/entities/category.entity';
 
 @Entity('users')
 export class User implements IUser {
@@ -31,4 +32,7 @@ export class User implements IUser {
 
   @OneToMany(() => Task, (task) => task.users)
   tasks?: Task[];
+
+  @OneToMany(() => Category, (category) => category.user)
+  categories?: Category[];
 }
