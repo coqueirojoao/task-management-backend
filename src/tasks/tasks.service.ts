@@ -31,8 +31,16 @@ export class TasksService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} task`;
+  async findAllById(id: number) {
+    try {
+      return await this.taskRepository.findBy({
+        users: {
+          id: id
+        }
+      })
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   update(id: number, updateTaskDto: UpdateTaskDto) {

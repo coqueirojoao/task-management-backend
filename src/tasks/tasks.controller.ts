@@ -42,8 +42,19 @@ export class TasksController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tasksService.findOne(+id);
+  async findAllById(@Res() res: Response, @Param('id') id: string, @Req() req: Request & { user: { sub: string, role: Role } }) {
+    try {
+      const user = req.user
+      if (+id === +user.sub || user.role.includes(Role.ADMIN)) {
+        const tasks = await this.tasksService.findAllById(+id);
+
+        return res.status(HttpStatus.OK).send(tasks);
+      } else {
+        return res.status(HttpStatus.BAD_REQUEST).send({ error: "Invalid User ID" });
+      }
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).send(error);
+    }
   }
 
   @Patch(':id')
