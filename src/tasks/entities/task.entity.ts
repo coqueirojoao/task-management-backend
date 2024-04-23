@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import ITask from "../interfaces/task.interface";
 import { User } from "src/users/entities/user.entity";
 
@@ -6,9 +6,6 @@ import { User } from "src/users/entities/user.entity";
 export class Task implements ITask {
     @PrimaryGeneratedColumn('increment')
     id: number;
-
-    @ManyToOne(() => User, (user) => user.id)
-    user_id: number;
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     title: string;
@@ -21,4 +18,8 @@ export class Task implements ITask {
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     updated_at: Date;
+
+    @ManyToOne(() => User, (user) => user.tasks)
+    @JoinColumn({ name: 'user_id' })
+    users?: User;
 }

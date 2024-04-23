@@ -19,8 +19,8 @@ import { TasksModule } from './tasks/tasks.module';
       username: process.env.DATABASE_ADMIN,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      entities: [User],
-      synchronize: true,
+      autoLoadEntities: true,
+      synchronize: true
     }),
     UsersModule,
     AuthModule,

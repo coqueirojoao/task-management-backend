@@ -4,7 +4,6 @@ export default interface IUser {
   email: string;
   role: string[];
   password: string;
-  birthday: Date;
   created_at: Date;
   updated_at: Date;
 }

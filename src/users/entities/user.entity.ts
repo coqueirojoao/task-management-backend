@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import IUser from '../interfaces/user.interface';
 import { Role } from '../../guard/roles/enum/role.enum';
 import { Task } from 'src/tasks/entities/task.entity';
@@ -17,7 +17,7 @@ export class User implements IUser {
   @Column({ type: 'varchar', length: 255, nullable: false })
   password: string;
 
-  @Column({ type: 'varchar', length: 255, default: [Role.USER] })
+  @Column({ type: 'set', enum: Role, default: [Role.USER] })
   role: Role[];
 
   @Column({ type: 'date', nullable: false })
@@ -29,6 +29,6 @@ export class User implements IUser {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updated_at: Date;
 
-  @OneToMany(() => Task, (task) => task.user_id)
-  tasks: Task[];
+  @OneToMany(() => Task, (task) => task.users)
+  tasks?: Task[];
 }
