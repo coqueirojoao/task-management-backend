@@ -22,8 +22,13 @@ export class TasksService {
     }
   }
 
-  findAll() {
-    return `This action returns all tasks`;
+
+  async findAll(): Promise<Task[]> {
+    try {
+      return await this.taskRepository.find({ relations: ['users'] });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   findOne(id: number) {

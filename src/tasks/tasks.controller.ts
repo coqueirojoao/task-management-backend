@@ -5,6 +5,8 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { Request, Response } from 'express';
 import { ValidationError } from 'class-validator';
 import { User } from 'src/users/entities/user.entity';
+import { Roles } from 'src/guard/roles/constants/roles-endpoints.constant';
+import { Role } from 'src/guard/roles/enum/role.enum';
 
 @Controller('tasks')
 export class TasksController {
@@ -27,9 +29,16 @@ export class TasksController {
     
   }
 
+  @Roles(Role.ADMIN)
   @Get()
-  findAll() {
-    return this.tasksService.findAll();
+  async findAll(@Res() res: Response) {
+    try {
+      const tasks = await this.tasksService.findAll();
+
+      return res.status(HttpStatus.OK).send(tasks);
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).send(error);
+    }
   }
 
   @Get(':id')
