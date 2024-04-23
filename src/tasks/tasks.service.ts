@@ -58,7 +58,19 @@ export class TasksService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} task`;
+  async remove(id: number, userId: number) {
+    try {
+      const task = await this.taskRepository.findBy({ users: {
+        id: userId
+      },
+      id: id
+    })
+
+      const response = await this.taskRepository.delete(task[0].id);
+
+      return response;
+    } catch (error) {
+      throw new Error('Invalid Task ID');
+    }
   }
 }

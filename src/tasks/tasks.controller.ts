@@ -74,7 +74,15 @@ export class TasksController {
 }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tasksService.remove(+id);
+ async remove(@Res() res: Response, @Req() req: Request & { user: { sub: string } }, @Param('id') id: string) {
+    try {
+      const userId = Number(req.user.sub);
+
+      await this.tasksService.remove(+id, userId);
+
+      return res.status(HttpStatus.OK).send();
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).send({ error: error.message });
+    }
   }
 }
