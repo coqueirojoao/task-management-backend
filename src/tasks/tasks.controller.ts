@@ -58,9 +58,20 @@ export class TasksController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.update(+id, updateTaskDto);
+  async update(@Res() res: Response, @Req() req: Request & { user: { sub: string } }, @Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
+    try {
+      const userId = Number(req.user.sub);
+      await this.tasksService.update(+id, +userId, updateTaskDto);
+
+      return res.status(HttpStatus.OK).send();
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        return res.status(HttpStatus.BAD_REQUEST).send(error);
+      } else {
+        return res.status(HttpStatus.BAD_REQUEST).send({ error: "Invalid Task ID" });
+      }
   }
+}
 
   @Delete(':id')
   remove(@Param('id') id: string) {

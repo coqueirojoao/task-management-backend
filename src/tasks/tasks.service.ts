@@ -43,8 +43,19 @@ export class TasksService {
     }
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  async update(id: number, userId: number, updateTaskDto: UpdateTaskDto) {
+    try {
+      const task = await this.taskRepository.findBy({ users: {
+        id: userId
+      },
+      id: id
+    })
+    const taskFinished = updateTaskDto.finished_at ? new Date() : null
+
+    return await this.taskRepository.update(task[0].id, { ...updateTaskDto, updated_at: new Date(), finished_at: taskFinished } )
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   remove(id: number) {

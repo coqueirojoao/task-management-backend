@@ -10,5 +10,4 @@ export class CreateTaskDto {
     @IsNotEmpty()
     @IsString()
     description: string;
-
 }
