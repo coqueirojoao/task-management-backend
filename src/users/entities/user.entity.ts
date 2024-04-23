@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import IUser from '../interfaces/user.interface';
 import { Role } from '../../guard/roles/enum/role.enum';
+import { Task } from 'src/tasks/entities/task.entity';
 
 @Entity('users')
 export class User implements IUser {
@@ -27,4 +28,7 @@ export class User implements IUser {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updated_at: Date;
+
+  @OneToMany(() => Task, (task) => task.user_id)
+  tasks: Task[];
 }
