@@ -4,4 +4,5 @@ export default interface ITask {
     description: string;
     created_at: Date;
     updated_at: Date;
+    finished_at: Date;
 }

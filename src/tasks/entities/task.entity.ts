@@ -19,6 +19,9 @@ export class Task implements ITask {
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     updated_at: Date;
 
+    @Column({ type: 'timestamp', default: null })
+    finished_at: Date;
+
     @ManyToOne(() => User, (user) => user.tasks)
     @JoinColumn({ name: 'user_id' })
     users?: User;
