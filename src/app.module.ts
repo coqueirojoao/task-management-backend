@@ -24,7 +24,6 @@ import { Category } from './categories/entities/category.entity';
       database: process.env.DATABASE_NAME,
       entities: [User, Task, Category],
       synchronize: true,
-      logging: true
     }),
     UsersModule,
     AuthModule,

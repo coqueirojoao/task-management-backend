@@ -43,6 +43,17 @@ export class TasksService {
     }
   }
 
+  async findById(id: number, userId: number) {
+    try {
+      return await this.taskRepository.findBy({
+        users: { id: userId },
+        id: id
+      })
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async update(id: number, userId: number, updateTaskDto: UpdateTaskDto) {
     try {
       const task = await this.taskRepository.findBy({ users: {
