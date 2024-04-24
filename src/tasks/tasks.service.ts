@@ -45,12 +45,18 @@ export class TasksService {
 
   async findById(id: number, userId: number) {
     try {
-      return await this.taskRepository.findBy({
+      const task = await this.taskRepository.findBy({
         users: { id: userId },
         id: id
       })
+
+      if (!task || task.length === 0) {
+        throw new Error('Task inválida')
+      }
+
+      return task;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   }
 

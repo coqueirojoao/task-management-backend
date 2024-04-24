@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './entities/category.entity';
 import { Repository } from 'typeorm';
 import { TasksService } from 'src/tasks/tasks.service';
-import { Task } from 'src/tasks/entities/task.entity';
 import { getTasksForRelation } from './utils/getTasksForRelation';
 
 @Injectable()
@@ -24,7 +23,7 @@ export class CategoriesService {
       const category = this.categoryRepository.create({...createCategoryDto, users: { id: userId }, tasks });
       return await this.categoryRepository.save(category);
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   }
 

@@ -20,7 +20,7 @@ export class CategoriesController {
       if (error instanceof ValidationError) {
         return res.status(HttpStatus.BAD_REQUEST).send(error);
       } else {
-        return res.status(HttpStatus.BAD_GATEWAY).send(error);
+        return res.status(HttpStatus.BAD_REQUEST).send({ error: error.message });
       }
     }
   }
