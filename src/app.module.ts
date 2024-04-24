@@ -2,11 +2,13 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/entities/user.entity';
 import { AuthModule } from './guard/auth/auth.module';
 import { RolesModule } from './guard/roles/roles.module';
 import { TasksModule } from './tasks/tasks.module';
 import { CategoriesModule } from './categories/categories.module';
+import { User } from './users/entities/user.entity';
+import { Task } from './tasks/entities/task.entity';
+import { Category } from './categories/entities/category.entity';
 
 @Module({
   imports: [
@@ -20,8 +22,9 @@ import { CategoriesModule } from './categories/categories.module';
       username: process.env.DATABASE_ADMIN,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      autoLoadEntities: true,
-      synchronize: true
+      entities: [User, Task, Category],
+      synchronize: true,
+      logging: true
     }),
     UsersModule,
     AuthModule,

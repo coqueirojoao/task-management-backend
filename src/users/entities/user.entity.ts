@@ -33,6 +33,6 @@ export class User implements IUser {
   @OneToMany(() => Task, (task) => task.users)
   tasks?: Task[];
 
-  @OneToMany(() => Category, (category) => category.user)
+  @OneToMany(() => Category, (categories) => categories.users)
   categories?: Category[];
 }

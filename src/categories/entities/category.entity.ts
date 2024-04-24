@@ -1,8 +1,9 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import ICategory from "../interfaces/category.interface";
-import { User } from "src/users/entities/user.entity";
+import { User } from "../../users/entities/user.entity";
+import { Task } from "../../tasks/entities/task.entity";
 
-Entity('categories')
+@Entity('categories')
 export class Category implements ICategory {
     @PrimaryGeneratedColumn('increment')
     id: number;
@@ -21,5 +22,8 @@ export class Category implements ICategory {
 
     @ManyToOne(() => User, (user) => user.categories)
     @JoinColumn({ name: 'user_id' })
-    user: User;
+    users?: User;
+
+    @ManyToMany(() => Task, (task) => task.categories)
+    tasks?: Task[]
 }

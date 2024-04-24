@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import ITask from "../interfaces/task.interface";
-import { User } from "src/users/entities/user.entity";
-import { Category } from "src/categories/entities/category.entity";
+import { User } from "../../users/entities/user.entity";
+import { Category } from "../../categories/entities/category.entity";
 
 @Entity('tasks')
 export class Task implements ITask {
@@ -27,7 +27,17 @@ export class Task implements ITask {
     @JoinColumn({ name: 'user_id' })
     users?: User;
 
-    @ManyToMany(() => Category)
-    @JoinTable()
-    categories: Category[];
+    @ManyToMany(() => Category, (category) => category.tasks)
+    @JoinTable({
+        name: "task_categories",
+        joinColumn: {
+            name: "task_id",
+            referencedColumnName: "id"
+        },
+        inverseJoinColumn: {
+            name: "category_id",
+            referencedColumnName: "id"
+        }
+    })
+    categories?: Category[];
 }
