@@ -31,19 +31,54 @@ export class CategoriesService {
     try {
       return await this.categoryRepository.find({ relations: ['users', 'tasks'] });
     } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async findAllById(id: number) {
+    try {
+      return await this.categoryRepository.findBy({
+        users: {
+          id: id
+        }
+      })
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async update(id: number, userId: number, updateCategoryDto: UpdateCategoryDto) {
+    try {
+      const tasks = await getTasksForRelation(this.taskService, updateCategoryDto.taskIds, userId);
+      console.log(tasks);
+
+      const category = await this.categoryRepository.findBy({ users: {
+        id: userId
+      },
+      id: id
+    })
+    
+
+    return await this.categoryRepository.save({...category[0], ...updateCategoryDto, tasks, updated_at: new Date() } )
+    } catch (error) {
+      console.log(error.message)
       throw new Error(error);
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
-  }
+  async remove(id: number, userId: number) {
+    try {
+      const category = await this.categoryRepository.findBy({ users: {
+        id: userId
+      },
+      id: id
+    })
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
-  }
+      const response = await this.categoryRepository.delete(category[0].id);
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+      return response;
+    } catch (error) {
+      throw new Error('Invalid Category ID');
+    }
   }
 }
