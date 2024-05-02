@@ -11,6 +11,6 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  await app.listen(process.env.API_PORT);
+  await app.listen(process.env.PORT, process.env.HOST);
 }
 bootstrap();
